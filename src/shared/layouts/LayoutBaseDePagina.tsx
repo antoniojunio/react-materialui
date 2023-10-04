@@ -1,4 +1,5 @@
 import {
+  Box,
   Icon,
   IconButton,
   Theme,
@@ -6,7 +7,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material'
-import { Box } from '@mui/system'
 import { ReactNode } from 'react'
 import { useDrawerContext } from '../contexts'
 
