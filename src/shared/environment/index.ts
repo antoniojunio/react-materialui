@@ -1,4 +1,4 @@
-export const Enviroment = {
+export const Environment = {
 
   LIMITE_DE_LINHAS: 10,
 

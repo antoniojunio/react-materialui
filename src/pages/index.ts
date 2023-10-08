@@ -1,2 +1,2 @@
-export * from './cidades/ListagemDeCidade'
+export * from './cidades/ListagemDePessoas'
 export * from './dashboard/Dashboard'
