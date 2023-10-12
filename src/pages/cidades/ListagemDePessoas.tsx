@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material'
+import { LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material'
 import { useSearchParams } from 'react-router-dom'
 
 import { IListagemPessoa, PessoasService } from '../../shared/services/api/pessoas/PessoasService'
@@ -20,11 +20,15 @@ export const ListagemDePessoas: React.FC = () => {
     return searchParams.get('busca') || ''
   }, [searchParams])
 
+  const pagina = useMemo(() => {
+    return Number(searchParams.get('pagina') || '1')
+  }, [searchParams])
+
   useEffect(() => {
     setIsLoading(true)
 
     debounce(() => {
-      PessoasService.getAll(1, busca)
+      PessoasService.getAll(pagina, busca)
         .then((result) => {
           setIsLoading(false)
 
@@ -38,7 +42,7 @@ export const ListagemDePessoas: React.FC = () => {
           }
         })
     })
-  }, [busca])
+  }, [busca, pagina])
 
   return (
     <LayoutBaseDePagina 
@@ -48,7 +52,7 @@ export const ListagemDePessoas: React.FC = () => {
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo='Nova'
-          aoMudarTextoDeBusca={texto => setSearchParams({busca: texto}, {replace:true})}
+          aoMudarTextoDeBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace:true})}
         />
       }
     >
@@ -80,6 +84,17 @@ export const ListagemDePessoas: React.FC = () => {
               <TableRow>
                 <TableCell colSpan={3}>
                   <LinearProgress variant='indeterminate'/>
+                </TableCell>
+              </TableRow>
+            )}
+            {(totalCount > 0 && totalCount > Environment.LIMITE_DE_LINHAS) && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Pagination 
+                    page={pagina}
+                    count={Math.round(totalCount / Environment.LIMITE_DE_LINHAS)} 
+                    onChange={(_, newPage) => setSearchParams({busca, pagina: newPage.toString()}, {replace:true})}
+                  />
                 </TableCell>
               </TableRow>
             )}
