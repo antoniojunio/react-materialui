@@ -2,12 +2,6 @@
   "pessoas": [
     {
       "cidadeId": 1,
-      "email": "carlos@gmail.com",
-      "id": 1,
-      "nomeCompleto": "Carlos Silva"
-    },
-    {
-      "cidadeId": 1,
       "email": "alfredo@gmail.com",
       "id": 2,
       "nomeCompleto": "Alfredo Pereira"
