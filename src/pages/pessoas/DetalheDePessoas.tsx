@@ -1,16 +1,24 @@
 import { useNavigate, useParams } from 'react-router-dom'
+import { FormHandles } from '@unform/core'
+import { Form } from '@unform/web'
 
 import { LayoutBaseDePagina } from '../../shared/layouts'
 import { FerramentasDeDetalhe } from '../../shared/components/ferramentas-de-detalhe/FerramentasDeDetalhe'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService'
-import { Form } from '@unform/web'
 import { VTextField } from '../../shared/forms'
 
+interface IFormData {
+  email: string
+  cidadeId: string
+  nomeCompleto: string
+}
 
 export const DetalheDePessoas: React.FC = () => {
   const { id = 'nova' } = useParams<'id'>()
   const navigate = useNavigate()
+
+  const formRef = useRef<FormHandles>(null)
 
   const [, setIsLoading] = useState(false)
   const [nome, setNome] = useState('')
@@ -34,8 +42,8 @@ export const DetalheDePessoas: React.FC = () => {
     }
   }, [id])
 
-  const handleSave = () => {
-    console.log('save')
+  const handleSave = (dados: IFormData) => {
+    console.log(dados)
   }
 
   const handleDelete = (id: number) => {
@@ -61,21 +69,19 @@ export const DetalheDePessoas: React.FC = () => {
           mostrarBotaoNovo={id !== 'nova'}
           mostrarBotaoApagar={id !== 'nova'}
 
-          aoClicarEmSalvar={handleSave}
-          aoClicarEmSalvarEFechar={handleSave}
           aoClicarEmApagar={() => handleDelete(Number(id))}
+          aoClicarEmSalvar={() => formRef.current?.submitForm()}
           aoClicarEmNovo={() => navigate('/pessoas')}
           aoClicarEmVoltar={() => navigate('pessoas/detalhe/nova')}
+          aoClicarEmSalvarEFechar={() => formRef.current?.submitForm()}
         />
       }
     >
 
-      <Form onSubmit={() => console.log()}>
-        <VTextField 
-          name='nomeCompleto'
-        />
-
-        <button type='submit'>Submit</button>
+      <Form ref={formRef} onSubmit={handleSave}>
+        <VTextField name='nomeCompleto'/>
+        <VTextField name='email'/>
+        <VTextField name='cidadeId'/>
       </Form>
       
     </LayoutBaseDePagina>
