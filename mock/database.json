@@ -1,10 +1,10 @@
 {
   "pessoas": [
     {
-      "cidadeId": 1,
-      "email": "alfredo@gmail.com",
       "id": 2,
-      "nomeCompleto": "Alfredo Pereira"
+      "nomeCompleto": "Alfredo Alves",
+      "email": "alfredo@gmail.com",
+      "cidadeId": 1
     },
     {
       "cidadeId": 1,
